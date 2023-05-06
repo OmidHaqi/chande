@@ -1,10 +1,10 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
-import 'package:http/http.dart' as http;
-import 'dart:convert' as convert;
+import 'package:http/http.dart' as http; // برای فرستادن درخواست به سرور از این پکیج اسفاده میشه
+import 'dart:convert' as convert; // برای تبدیل اعدا  از این پکیج استفاده کردم
 import 'Model/Currency.dart';
-import 'dart:developer' as developer;
+import 'dart:developer' as developer;// برای استفاده از امکانات توسعه دهنده از این پکیج استفاده کردم
 import 'package:intl/intl.dart';
 
 void main() {
