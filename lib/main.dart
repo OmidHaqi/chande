@@ -8,21 +8,27 @@ import 'dart:developer' as developer;
 import 'package:intl/intl.dart';
 
 void main() {
+   // run App => app az inja run mishe 
   runApp(const MyApp());
 }
 
+// widget => در واقع کلاسی است که میداند رابط کاربری خود را توصیف کند 
+// extends => ارث بری از تابع استست لس ویجت
 class MyApp extends StatelessWidget {
   const MyApp({super.key});
 
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
+      //برای حذف کردن برچسب دیباگ در اپ 
       debugShowCheckedModeBanner: false,
+      //برای راست چین کردن اپ 
       localizationsDelegates: const [
         GlobalMaterialLocalizations.delegate,
         GlobalWidgetsLocalizations.delegate,
         GlobalCupertinoLocalizations.delegate,
       ],
+      //تم دادن به اپ در حد استایل لوکال برای تکست ها  این روش منسوخ شده است                                                               
       theme: ThemeData(
         fontFamily: 'dana',
         textTheme: const TextTheme(
@@ -55,6 +61,7 @@ class MyApp extends StatelessWidget {
               fontWeight: FontWeight.w700),
         ),
       ),
+      
       supportedLocales: const [
         Locale("fa"), //Persian
       ],
@@ -74,7 +81,7 @@ class Home extends StatefulWidget {
 
 class _HomeState extends State<Home> {
   List<Currency> currency = [];
-
+// تابع دریافت اطلاعات از سرور از طریق ای پی ای
   Future getResponse(BuildContext context) async {
     var url = "http://sasansafari.com/flutter/api.php?access_key=flutter123456";
     var value = await http.get(Uri.parse(url));
@@ -110,8 +117,10 @@ class _HomeState extends State<Home> {
 
   @override
   Widget build(BuildContext context) {
+    //داربست یا اسکفولد : اسکلت بندی صفحه نمایش 
     return Scaffold(
       backgroundColor: const Color.fromARGB(255, 243, 243, 243),
+      //قسمت بالایی اپ
       appBar: AppBar(
         elevation: 0,
         backgroundColor: Colors.white,
@@ -122,6 +131,7 @@ class _HomeState extends State<Home> {
             child: Text("قیمت به روز ارز",
                 style: Theme.of(context).textTheme.headline1),
           ),
+          //یه ویجت برای پر کردن فضای خالی بین ویجت ها
           Expanded(
             child: Align(
               alignment: Alignment.centerLeft,
@@ -131,6 +141,7 @@ class _HomeState extends State<Home> {
           const SizedBox(width: 16),
         ],
       ),
+      //بدنه‌ی اپ رو داخل بادی مینویسیم
       body: SingleChildScrollView(
         child: Padding(
           padding: const EdgeInsets.fromLTRB(20, 30, 20, 10),
@@ -152,6 +163,7 @@ class _HomeState extends State<Home> {
             ),
             Padding(
               padding: const EdgeInsets.fromLTRB(1, 20, 1, 0),
+              //عنوان گزینه ها 
               child: Container(
                 width: double.infinity,
                 height: 35,
@@ -192,12 +204,16 @@ class _HomeState extends State<Home> {
                   color: const Color.fromARGB(255, 232, 232, 232),
                   borderRadius: BorderRadius.circular(1000),
                 ),
-                child: Row(
+                child:
+                // ردیف نمایش ساعت بروزرسانی و دکمه بروزرسانی 
+                  Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
+                    //دکمه بروزرسانی 
                     SizedBox(
                       height: MediaQuery.of(context).size.height/16,
                       child: TextButton.icon(
+                        //تایع ان‌پرس دکمه
                         onPressed: () {
                           currency.clear();
                           listFutureBuilder(context);
@@ -212,6 +228,7 @@ class _HomeState extends State<Home> {
                               style: Theme.of(context).textTheme.headline1),
                         ),
                         style: ButtonStyle(
+                          //استفاده از تم متریال در دکمه
                           backgroundColor: MaterialStateProperty.all(
                             const Color.fromARGB(255, 202, 193, 255),
                           ),
@@ -240,6 +257,7 @@ class _HomeState extends State<Home> {
 
   FutureBuilder<dynamic> listFutureBuilder(BuildContext context) {
     return FutureBuilder(
+      //نمایش انیمیش لودینگ قبل از لود شدن لیست ارز ها 
       //***** ? $$$$$ : @@@@@
       builder: (context, snapshot) {
         return snapshot.hasData
@@ -267,17 +285,19 @@ class _HomeState extends State<Home> {
                 child: CircularProgressIndicator(),
               );
       },
+      //فراخوانی اطلاعات از سمت سرور با استفاده از این تابع انجام میشود
       future: getResponse(context),
     );
   }
 
+//تابع گرفتن ساعت دستگاه هنگام بروزرسانی 
   String _getTime() {
     DateTime now = DateTime.now();
     return DateFormat('kk:mm:ss').format(now);
   }
 }
 
-
+// ایتم گزینه ها 
 class MyItem extends StatelessWidget {
   int position;
   List<Currency> currency;
@@ -318,7 +338,7 @@ class MyItem extends StatelessWidget {
     );
   }
 }
-
+// کلاس گزینه‌ی تبلغات بین گزینه ها
 class Add extends StatelessWidget {
   const Add({
     super.key,
@@ -348,7 +368,7 @@ class Add extends StatelessWidget {
     );
   }
 }
-
+// تابع نمایش اسنک برا کلیک رو دکمه بروزرسانی 
 void _showSnackBar(BuildContext context, String msg) {
   ScaffoldMessenger.of(context).showSnackBar(SnackBar(
       content: Text(
@@ -358,7 +378,7 @@ void _showSnackBar(BuildContext context, String msg) {
       backgroundColor: Colors.green));
 }
 
-
+//تابع تبدیل اعداد لاتین به فارسی
 String getFarsiNumber(String number) {
   const en = ['0', '1', '2', '3', '4', '5', '6', '7', '8', '9'];
   const fa = ['۰', '۱', '۲', '۳', '۴', '۵', '۶', '۷', '۸', '۹'];
